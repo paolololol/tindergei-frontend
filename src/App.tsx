@@ -1,26 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Router from './routes'
+import { BrowserRouter } from 'react-router-dom'
+import React, { ReactElement, useEffect } from 'react'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { useKeycloak } from '@react-keycloak/web'
+import {createTheme, ThemeProvider} from "@mui/material";
+import createTypography from "@mui/material/styles/createTypography";
+import createPalette from "@mui/material/styles/createPalette";
 
-function App() {
+const queryClient = new QueryClient()
+
+const palette = createPalette({primary: {main: '#257048'}})
+const typography = createTypography(palette, {fontFamily: 'Montserrat'});
+const theme = createTheme({typography, palette})
+
+export default function App (): ReactElement {
+  const { initialized, keycloak } = useKeycloak()
+
+  useEffect(() => {
+    if (initialized && !keycloak?.authenticated) {
+      keycloak.login()
+    }
+  }, [initialized, keycloak])
+
+  if (!initialized || !keycloak?.authenticated) {
+    return <div>...</div>
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+      <ThemeProvider theme={theme}>
+          <QueryClientProvider client={queryClient}>
+            <BrowserRouter>
+              <Router/>
+            </BrowserRouter>
+          </QueryClientProvider>
+      </ThemeProvider>
+  )
 }
-
-export default App;

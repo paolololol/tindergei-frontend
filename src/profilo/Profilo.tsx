@@ -1,0 +1,59 @@
+import React, {Fragment, ReactElement, useRef} from "react";
+import {Avatar, Box, Button, CircularProgress} from "@mui/material";
+import {useMutation, useQuery} from "react-query";
+import {getMe, ProfiloEditModel, updateMe, uploadImage} from "../api/profilo";
+import placeholder from '../assets/placeholder.svg'
+import {Field, Formik} from "formik";
+import {TextField} from "formik-mui";
+
+export default function Profilo(): ReactElement {
+    const inputRef = useRef<HTMLInputElement | null>(null);
+    const me = useQuery('me', getMe, {enabled: false});
+    const uploadImageMutation = useMutation('uploadImage', (image: File) => uploadImage(image), {onSuccess: () => me.refetch()})
+    const mutate = useMutation('updateProfile', (values: ProfiloEditModel) => updateMe(values), {onSuccess: () => me.refetch()})
+    if (!me.data) return (
+        <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
+            <CircularProgress/>
+        </Box>
+    )
+
+    return (
+        <Box sx={{overflow: 'auto', height: '100%', px: 2}}>
+            <Box sx={{
+                display: 'inline-flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                my: 1,
+                flexDirection: 'column'
+            }}>
+                <Avatar src={me.data.avatarPath ?? placeholder} sx={{width: '30%', height: 'auto'}}/>
+                <input ref={inputRef} style={{display: 'none'}} type={'file'} accept={'image/*'} onChange={(e) => {
+                    if (e.target.files) {
+                        uploadImageMutation.mutate(e.target.files[0])
+                    }
+                }}/>
+                <Button onClick={() => inputRef.current?.click()}>{me.data.avatarPath ? 'Cambia' : 'Carica'} immagine</Button>
+            </Box>
+            <Formik initialValues={me.data}
+                    enableReinitialize
+                    onSubmit={(values) => mutate.mutate(values)}>
+                {({values, submitForm}) => (
+                    <Fragment>
+                        <Field sx={{my: 1}} component={TextField} name={'nome'} label={'Nome'} variant={'outlined'}
+                               fullWidth/>
+                        <Field sx={{my: 1}}
+                               component={TextField}
+                               name={'descrizione'}
+                               label={'Qualcosa su di te'}
+                               placeholder={'Racconta qualcosa di interessante su di te'}
+                               variant={'outlined'}
+                               minRows={2}
+                               multiline
+                               fullWidth/>
+                        <Button disabled={!values.nome} sx={{my: 1}} variant={'contained'} fullWidth onClick={submitForm}>Salva</Button>
+                    </Fragment>
+                )}
+            </Formik>
+        </Box>
+    )
+}
