@@ -12,7 +12,7 @@ import {
     ListItemText,
     Typography
 } from "@mui/material";
-import React, {Fragment} from "react";
+import React from "react";
 import placeholder from '../assets/placeholder.svg'
 import {useNavigate} from "react-router-dom";
 

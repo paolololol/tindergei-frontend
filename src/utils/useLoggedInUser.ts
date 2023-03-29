@@ -2,10 +2,6 @@
 import {useMemo} from 'react'
 import {useKeycloak} from '@react-keycloak/web'
 
-function capitalize (x: string): string {
-  return `${x.slice(0, 1).toUpperCase()}${x.slice(1).toLowerCase()}`
-}
-
 function parseSezione (groups: string[]): string {
   return groups[0].split('/')[1]
 }

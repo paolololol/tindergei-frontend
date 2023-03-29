@@ -1,12 +1,17 @@
 import {
-    Alert, Avatar,
+    Alert,
+    Avatar,
     Box,
     Button,
     FormControl,
-    FormControlLabel, List, ListItem,
+    FormControlLabel,
     Radio,
     RadioGroup as MuiRadioGroup,
-    Snackbar, Step, StepLabel, Stepper, Switch,
+    Snackbar,
+    Step,
+    StepLabel,
+    Stepper,
+    Switch,
     Typography
 } from "@mui/material";
 import {Field, Formik, useField} from "formik";
@@ -15,7 +20,7 @@ import wosm from '../assets/wosm.png'
 import wagggs from '../assets/wagggs.png'
 import fis from '../assets/fis.png'
 import useLoggedInUser from "../utils/useLoggedInUser";
-import {TextField, RadioGroup} from "formik-mui";
+import {RadioGroup, TextField} from "formik-mui";
 import {useMutation, useQuery} from "react-query";
 import {getMe, ProfiloCreateModel, signup} from "../api/profilo";
 import {useNavigate} from "react-router-dom";
