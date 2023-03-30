@@ -1,6 +1,6 @@
 import React, {ReactElement, useState} from "react";
 import {useMutation, useQuery} from "react-query";
-import {getAvailable, getMatches} from "../api/profilo";
+import {getAvailable, getMatches, getMe} from "../api/profilo";
 import {
     Alert,
     Box,
@@ -18,7 +18,7 @@ import {Favorite, NotInterested} from "@mui/icons-material";
 import {likePerson} from "../api/chat";
 
 export default function Home(): ReactElement {
-    const me = useQuery('me', getMatches, {refetchOnWindowFocus: false});
+    const me = useQuery('me', getMe, {refetchOnWindowFocus: false});
     const available = useQuery('available', getAvailable, {enabled: !!me.data, refetchOnWindowFocus: false});
     const matches = useQuery('matches', getMatches, {enabled: !!me.data, refetchOnWindowFocus: false});
     const [current, setCurrent] = useState(0);
