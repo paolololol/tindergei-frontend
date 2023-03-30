@@ -79,11 +79,11 @@ export default function Home(): ReactElement {
             >
                 <Alert severity="success">Piaci anche tu a {likedBy}!</Alert>
             </Snackbar>
-            <Card sx={{mx: 2}}>
+            <Card sx={{mx: 2, maxHeight: '90%', maxWidth: '90%', overflow: 'hidden', display: 'flex', flexDirection: 'column'}}>
                 <CardHeader title={currentItem.nome} subheader={currentItem.sezione}/>
-                <CardContent>
-                    <img src={currentItem.avatarPath ?? placeholder} alt={currentItem.nome} width={'100%'}/>
-                    <Typography>{currentItem.descrizione}</Typography>
+                <CardContent sx={{display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
+                    <img src={currentItem.avatarPath ?? placeholder} alt={currentItem.nome} style={{flex: 1}}/>
+                    <Typography sx={{flex: 1}}>{currentItem.descrizione}</Typography>
                 </CardContent>
                 <CardActions sx={{display: 'flex', justifyContent: 'space-between', px: 4}}>
                     <IconButton size={'large'} onClick={() => setCurrent(x => x + 1)}><NotInterested

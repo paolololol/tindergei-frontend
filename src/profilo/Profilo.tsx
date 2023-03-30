@@ -8,7 +8,7 @@ import {TextField} from "formik-mui";
 
 export default function Profilo(): ReactElement {
     const inputRef = useRef<HTMLInputElement | null>(null);
-    const me = useQuery('me', getMe, {enabled: false});
+    const me = useQuery('me', getMe, {refetchOnWindowFocus: false});
     const uploadImageMutation = useMutation('uploadImage', (image: File) => uploadImage(image), {onSuccess: () => me.refetch()})
     const mutate = useMutation('updateProfile', (values: ProfiloEditModel) => updateMe(values), {onSuccess: () => me.refetch()})
     if (!me.data) return (
@@ -24,7 +24,8 @@ export default function Profilo(): ReactElement {
                 justifyContent: 'center',
                 alignItems: 'center',
                 my: 1,
-                flexDirection: 'column'
+                flexDirection: 'column',
+                width: '100%'
             }}>
                 <Avatar src={me.data.avatarPath ?? placeholder} sx={{width: '30%', height: 'auto'}}/>
                 <input ref={inputRef} style={{display: 'none'}} type={'file'} accept={'image/*'} onChange={(e) => {
@@ -39,12 +40,12 @@ export default function Profilo(): ReactElement {
                     onSubmit={(values) => mutate.mutate(values)}>
                 {({values, submitForm}) => (
                     <Fragment>
-                        <Field sx={{my: 1}} component={TextField} name={'nome'} label={'Nome'} variant={'outlined'}
+                        <Field sx={{my: 1}} component={TextField} name={'nome'} helperText={'Nome'} variant={'outlined'}
                                fullWidth/>
                         <Field sx={{my: 1}}
                                component={TextField}
                                name={'descrizione'}
-                               label={'Qualcosa su di te'}
+                               helperText={'Qualcosa su di te'}
                                placeholder={'Racconta qualcosa di interessante su di te'}
                                variant={'outlined'}
                                minRows={2}
