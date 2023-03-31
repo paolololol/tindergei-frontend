@@ -1,10 +1,13 @@
 import React, {Fragment, ReactElement, useRef} from "react";
-import {Avatar, Box, Button, CircularProgress} from "@mui/material";
+import {Avatar, Box, Button, CircularProgress, FormControlLabel, Radio, Typography} from "@mui/material";
 import {useMutation, useQuery} from "react-query";
 import {getMe, ProfiloEditModel, updateMe, uploadImage} from "../api/profilo";
 import placeholder from '../assets/placeholder.svg'
 import {Field, Formik} from "formik";
-import {TextField} from "formik-mui";
+import {RadioGroup, TextField} from "formik-mui";
+import wosm from '../assets/wosm.png'
+import wagggs from '../assets/wagggs.png'
+import fis from '../assets/fis.png'
 
 export default function Profilo(): ReactElement {
     const inputRef = useRef<HTMLInputElement | null>(null);
@@ -35,7 +38,7 @@ export default function Profilo(): ReactElement {
                 }}/>
                 <Button onClick={() => inputRef.current?.click()}>{me.data.avatarPath ? 'Cambia' : 'Carica'} immagine</Button>
             </Box>
-            <Formik initialValues={me.data}
+            <Formik initialValues={{...me.data, sexPreference: me.data.sexPreference == null ? '' : me.data.sexPreference ? 'true' : 'false'}}
                     enableReinitialize
                     onSubmit={(values) => mutate.mutate(values)}>
                 {({values, submitForm}) => (
@@ -51,6 +54,15 @@ export default function Profilo(): ReactElement {
                                minRows={2}
                                multiline
                                fullWidth/>
+                        <Typography>La tua preferenza:</Typography>
+                        <Field component={RadioGroup} name={'sexPreference'} row>
+                            <FormControlLabel value={'true'} control={<Radio/>}
+                                            label={<Avatar sx={{width: 56, height: 56}} src={wosm}/>}/>
+                            <FormControlLabel value={'false'} control={<Radio/>}
+                                            label={<Avatar sx={{width: 56, height: 56}} src={wagggs}/>}/>
+                            <FormControlLabel value={''} control={<Radio/>}
+                                            label={<img alt={'FIS'} style={{height: 66}} src={fis}/>}/>
+                        </Field>
                         <Button disabled={!values.nome} sx={{my: 1}} variant={'contained'} fullWidth onClick={submitForm}>Salva</Button>
                     </Fragment>
                 )}

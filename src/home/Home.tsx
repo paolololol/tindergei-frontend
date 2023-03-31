@@ -1,6 +1,6 @@
-import React, {ReactElement, useState} from "react";
+import React, {ReactElement, useEffect, useRef, useState} from "react";
 import {useMutation, useQuery} from "react-query";
-import {getAvailable, getMatches, getMe} from "../api/profilo";
+import {getAvailable, getMatches, getMe, setNotificationToken} from "../api/profilo";
 import {
     Alert,
     Box,
@@ -16,6 +16,7 @@ import {
 import placeholder from '../assets/placeholder.svg'
 import {Favorite, NotInterested} from "@mui/icons-material";
 import {likePerson} from "../api/chat";
+import {getFbToken} from "../firebase";
 
 export default function Home(): ReactElement {
     const me = useQuery('me', getMe, {refetchOnWindowFocus: false});
@@ -24,6 +25,23 @@ export default function Home(): ReactElement {
     const [current, setCurrent] = useState(0);
     const like = useMutation(likePerson);
     const [likedBy, setLikedBy] = useState<string | null>(null);
+    const sendToken = useMutation('token', setNotificationToken);
+    const notificationCheckedRef = useRef(false);
+    useEffect(() => {
+       if(me.isSuccess && me.data && !notificationCheckedRef.current) {
+           notificationCheckedRef.current = true;
+           if(Notification.permission !== 'granted') {
+               Notification.requestPermission().then((permission) => {
+                   if(permission === 'granted') {
+                       getFbToken().then((token) => {
+                           console.log(token);
+                           sendToken.mutate(token);
+                       })
+                   }
+               });
+           }
+       }
+    }, [me])
 
     const onLike = (tessera: string, nome: string) => {
         like.mutateAsync(tessera).then((data) => {

@@ -18,10 +18,19 @@ export interface ProfiloCreateModel {
 export interface ProfiloEditModel {
     nome: string;
     descrizione: string;
+    sexPreference: string;
 }
 
-export async function getMe(): Promise<ProfiloViewModel> {
+export interface ProfiloDetailViewModel extends ProfiloViewModel {
+    sexPreference: boolean;
+}
+
+export async function getMe(): Promise<ProfiloDetailViewModel> {
    return axios.get("/profilo/me").then(x => x.data)
+}
+
+export async function setNotificationToken(token: string): Promise<void> {
+    return axios.patch(`profilo/notificationToken`,null, {params: {token}}).then(x => x.data)
 }
 
 export async function signup(model: ProfiloCreateModel): Promise<ProfiloViewModel> {
@@ -37,6 +46,7 @@ export async function updateMe(model: ProfiloEditModel): Promise<void> {
     return axios.patch("/profilo/me", {
         nome: model.nome,
         descrizione: model.descrizione,
+        sexPreference: model.sexPreference == '' ? null : model.sexPreference === 'true'
     }).then(x => x.data)
 }
 

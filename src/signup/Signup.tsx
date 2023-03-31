@@ -77,6 +77,7 @@ function LeBasi({goNext}: StepProps) {
                 <Step><StepLabel>Comportati decentemente, scherzare è divertente, esagerare no</StepLabel></Step>
                 <Step><StepLabel>Non usiamo i dati del CNGEI, quello che scrivi qui è responsabilità tua</StepLabel></Step>
                 <Step><StepLabel>Puoi usare uno pseudonimo, ma ogni violazione della legge scout o non sarà riportata a chi di dovere</StepLabel></Step>
+                <Step><StepLabel>Non far finta di essere un'altra persona. Davvero.</StepLabel></Step>
                 <Step><StepLabel>No, non è il modo per avere nuovi <span style={{textDecoration: 'line-through'}}>soci</span> tesserati tra 8 anni e 9 mesi</StepLabel></Step>
             </Stepper>
             <Box display={'inline-flex'} flexDirection={'row'} alignItems={'center'}>
@@ -123,6 +124,9 @@ function ChiSei({goNext}: StepProps) {
                     Grazie, il GIDO sarà notificato!
                 </Alert>
             </Snackbar>
+            <Typography variant={'caption'}>
+                PS: No, non è una domanda seria.
+            </Typography>
         </Box>
     )
 }
