@@ -30,22 +30,30 @@ export default function Layout() {
      const sendToken = useMutation('token', setNotificationToken);
     const [notificationRequested, setNotificationRequested] = useState(true);
     useEffect(() => {
-        if(Notification.permission !== 'granted') {
-            setNotificationRequested(false);
+        try {
+            if (Notification && Notification.permission !== 'granted') {
+                setNotificationRequested(false);
+            }
+        } catch(e) {
+            console.log(e);
         }
     }, [])
     const onNotificationClicked = useCallback(() => {
         if(me.isSuccess && me.data) {
-            if(Notification.permission !== 'granted') {
-                setNotificationRequested(true)
-                Notification.requestPermission().then((permission) => {
-                    if(permission === 'granted') {
-                        getFbToken()?.then((token) => {
-                            console.log(token);
-                            sendToken.mutate(token);
-                        })
-                    }
-                });
+            try {
+                if (Notification.permission !== 'granted') {
+                    setNotificationRequested(true)
+                    Notification.requestPermission().then((permission) => {
+                        if (permission === 'granted') {
+                            getFbToken()?.then((token) => {
+                                console.log(token);
+                                sendToken.mutate(token);
+                            })
+                        }
+                    });
+                }
+            } catch(e) {
+                console.log(e);
             }
         }
     }, [me])
