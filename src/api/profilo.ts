@@ -6,6 +6,7 @@ export interface ProfiloViewModel {
     sezione: string,
     avatarPath: string,
     descrizione: string
+    vip?: boolean
 }
 
 export interface ProfiloCreateModel {

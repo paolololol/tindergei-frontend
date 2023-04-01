@@ -16,7 +16,6 @@ import {
 import placeholder from '../assets/placeholder.svg'
 import {Favorite, NotInterested} from "@mui/icons-material";
 import {likePerson} from "../api/chat";
-import {getFbToken} from "../firebase";
 
 export default function Home(): ReactElement {
     const me = useQuery('me', getMe, {refetchOnWindowFocus: false});
@@ -79,7 +78,10 @@ export default function Home(): ReactElement {
             >
                 <Alert severity="success">Piaci anche tu a {likedBy}!</Alert>
             </Snackbar>
-            <Card sx={{mx: 2, maxHeight: '90%', maxWidth: '90%', overflow: 'hidden', display: 'flex', flexDirection: 'column'}}>
+            <Card sx={{mx: 2, maxHeight: '90%', maxWidth: '90%', overflow: 'hidden', display: 'flex', flexDirection: 'column', background: currentItem.vip ? `
+                radial-gradient(ellipse farthest-corner at right bottom, #FEDB37 0%, #FDB931 8%, #9f7928 30%, #8A6E2F 40%, transparent 80%),
+                radial-gradient(ellipse farthest-corner at left top, #FFFFFF 0%, #FFFFAC 8%, #D1B464 25%, #5d4a1f 62.5%, #5d4a1f 100%);
+            ` : ''}}>
                 <CardHeader title={currentItem.nome} subheader={currentItem.sezione}/>
                 <CardContent sx={{display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
                     <img src={currentItem.avatarPath ?? placeholder} alt={currentItem.nome} style={{flex: 1}}/>

@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getToken, getMessaging } from "firebase/messaging";
+import { getToken, getMessaging, onMessage } from "firebase/messaging";
 
 let messaging: any;
 try {
@@ -15,6 +15,9 @@ try {
 // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     messaging = getMessaging(app);
+    onMessage(messaging, (payload: any) => {
+        console.log('Message received. ', payload);
+    })
 } catch (error) {
     console.warn(error);
 }
