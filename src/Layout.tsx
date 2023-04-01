@@ -40,7 +40,7 @@ export default function Layout() {
                 setNotificationRequested(true)
                 Notification.requestPermission().then((permission) => {
                     if(permission === 'granted') {
-                        getFbToken().then((token) => {
+                        getFbToken()?.then((token) => {
                             console.log(token);
                             sendToken.mutate(token);
                         })
