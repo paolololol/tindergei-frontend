@@ -25,24 +25,6 @@ export default function Home(): ReactElement {
     const [current, setCurrent] = useState(0);
     const like = useMutation(likePerson);
     const [likedBy, setLikedBy] = useState<string | null>(null);
-    /* const sendToken = useMutation('token', setNotificationToken);
-* const notificationCheckedRef = useRef(false);
-* useEffect(() => {
-*    if(me.isSuccess && me.data && !notificationCheckedRef.current) {
-*        notificationCheckedRef.current = true;
-*        if(Notification.permission !== 'granted') {
-*            Notification.requestPermission().then((permission) => {
-*                if(permission === 'granted') {
-*                    getFbToken().then((token) => {
-*                        console.log(token);
-*                        sendToken.mutate(token);
-*                    })
-*                }
-*            });
-*        }
-*    }
-* }, [me])
- */
     const onLike = (tessera: string, nome: string) => {
         like.mutateAsync(tessera).then((data) => {
             if(data) {

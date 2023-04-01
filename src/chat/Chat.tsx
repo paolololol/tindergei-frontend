@@ -52,11 +52,13 @@ export default function Chat() {
             <List sx={{width: '100%'}}>
                 {chat.data!.map((chat) => {
                     const person = findMatch(matches.data!, me.data?.tessera === chat.tessera1 ? chat.tessera2 : chat.tessera1);
+                    const time = chat?.lastMessage ? chat?.lastMessage.split('T')[1].split('.')[0].split(":") : ['0']
+                    time[0] = (parseInt(time[0]) + 2).toString().padStart(2, '0')
                     return (
                         <ListItem key={chat.id} disablePadding>
                             <ListItemButton onClick={() => navigate(`/chat/${chat.id}`)}>
                                 <ListItemAvatar><Avatar src={person?.avatarPath ?? placeholder}/></ListItemAvatar>
-                                <ListItemText secondary={chat?.lastMessage ? chat?.lastMessage?.split('T')[0] + ' ' + chat?.lastMessage?.split('T')[1].split('.')[0] : undefined}>{person?.nome}</ListItemText>
+                                <ListItemText secondary={chat?.lastMessage ? chat?.lastMessage?.split('T')[0] + ' ' + time.join(":") : undefined}>{person?.nome}</ListItemText>
                             </ListItemButton>
                         </ListItem>
                     )
